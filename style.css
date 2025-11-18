@@ -1,0 +1,16 @@
+:root {
+    --color-background: #F4F2F0;
+    --color-primary-accent: #9CAFB7;
+    --color-secondary-accent: #C5A3A0;
+    --color-text: #4A4A4A;
+    --color-card-background: #FFFFFF;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: 'Varela Round', 'Noto Sans TC', sans-serif; /* 範例字體 */
+    line-height: 1.6;
+}
+
+/* 確保按鈕、卡片等應用了圓角和陰影 */
