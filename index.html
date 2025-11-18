@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donation sharing platform</title>
+    <title>🧸 Donation Sharing Platform</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -11,7 +11,7 @@
 
     <header>
         <div class="container">
-            <h1>Donation sharing platform</h1>
+            <h1>Donation Sharing Platform ✨</h1>
             <p>A space for sharing items with warmth and soft colors.</p>
         </div>
     </header>
@@ -34,6 +34,8 @@
             <h2>📦 Donate an Item</h2>
             <form action="<YOUR_FORMSPREE_ENDPOINT>" method="POST" class="donation-form">
                 
+                <input type="hidden" name="_next" value="YOUR_GITHUB_PAGES_URL?submission=success" />
+
                 <div class="form-group">
                     <label for="item_name">Item Name *</label>
                     <input type="text" id="item_name" name="Item Name" required>
@@ -63,17 +65,12 @@
                 
                 <button type="submit">Submit Donation Information</button>
             </form>
-            <form action="<YOUR_FORMSPREE_ENDPOINT>" method="POST" class="donation-form">
-    
-    <input type="hidden" name="_next" value="YOUR_GITHUB_PAGES_URL?submission=success" />
-    <button type="submit">Submit Donation Information</button>
-</form>
         </section>
 
     </main>
 
     <footer>
-        <p>© donation sharing platform | Information Sharing Platform</p>
+        <p>© 2025 Donation Sharing Platform | Information Sharing Platform</p>
     </footer>
 
     <div id="item-modal" class="modal">
