@@ -1,56 +1,49 @@
-// Sample Donation Items (You must manually update this array)
+// Sample Donation Items (Your data source - manually update this array)
 const donationItems = [
     {
         id: 1,
         name: "Morandi Blue Sweater",
-        description: "Warm and soft sweater, size M, 90% new, great for winter.",
+        description: "Warm and soft sweater, size M, 90% new, great for winter. Made of cashmere blend. Only washed once with gentle detergent.",
         category: "Apparel",
         status: "available", // available, reserved, claimed
-        contact: "john.doe@email.com", // Hidden, used for button action
-        image: "https://via.placeholder.com/400x200/9CAFB7/FFFFFF?text=Item+Image+1" // Replace with actual image link
+        contact: "Donor's Email: john.doe@email.com", // This is the detail shown in the modal
+        image: "https://via.placeholder.com/600x300/9CAFB7/FFFFFF?text=Sweater+Image" 
     },
     {
         id: 2,
         name: "Classic Fairy Tale Book Set",
-        description: "Set of five books, no scribbles, suitable for 3-6 year olds, well-preserved.",
+        description: "Set of five books: Cinderella, Snow White, etc. No scribbles, suitable for 3-6 year olds, well-preserved. Minor wear on the corners of the box.",
         category: "Books",
         status: "reserved",
-        contact: "jane.smith@email.com",
-        image: "https://via.placeholder.com/400x200/C5A3A0/FFFFFF?text=Item+Image+2"
+        contact: "Line ID: Jane123",
+        image: "https://via.placeholder.com/600x300/C5A3A0/FFFFFF?text=Book+Set+Image"
     },
     {
         id: 3,
         name: "Small Tabletop Blender",
-        description: "In working condition, ideal for beginner bakers, comes with original box.",
+        description: "Brand X blender, 300W. Functioning normally, perfect for smoothies or sauces. Comes with original box and instruction manual.",
         category: "Appliances",
         status: "available",
-        contact: "mike.jones@email.com",
-        image: "https://via.placeholder.com/400x200/D9CFCF/4A4A4A?text=Item+Image+3"
-    },
-    {
-        id: 4,
-        name: "New Unopened Building Blocks Toy",
-        description: "1000 pieces of blocks, suitable for ages 8+, vibrant colors, fosters creativity.",
-        category: "Others",
-        status: "available",
-        contact: "sara.lee@email.com",
-        image: "https://via.placeholder.com/400x200/9CAFB7/FFFFFF?text=Item+Image+4"
+        contact: "WeChat ID: MikeJones88",
+        image: "https://via.placeholder.com/600x300/D9CFCF/4A4A4A?text=Blender+Image"
     }
+    // Add more items here...
 ];
 
 const itemListContainer = document.getElementById('item-list');
+const itemModal = document.getElementById('item-modal');
+const modalDetailsContent = document.getElementById('modal-details-content');
+const closeModalBtn = document.querySelector('.close-btn');
 
 /**
- * Returns the status text and corresponding CSS class based on the item status.
- * @param {string} status 
- * @returns {object}
+ * Returns the status text and corresponding CSS class.
  */
 function getStatusInfo(status) {
     switch (status) {
         case 'reserved':
             return { text: 'Reserved', class: 'status-reserved' };
         case 'claimed':
-            return { text: 'Claimed', class: 'status-claimed' }; // Add CSS style for claimed if needed
+            return { text: 'Claimed', class: 'status-claimed' };
         case 'available':
         default:
             return { text: 'Available', class: 'status-available' };
@@ -58,37 +51,72 @@ function getStatusInfo(status) {
 }
 
 /**
- * Creates the HTML structure for a single item card.
- * @param {object} item 
- * @returns {string} HTML string
+ * Creates the HTML structure for a single item card (The summary view).
  */
 function createItemCard(item) {
     const statusInfo = getStatusInfo(item.status);
-    const isAvailable = item.status === 'available';
 
     return `
-        <div class="donation-card">
+        <div class="donation-card" data-id="${item.id}">
             <img src="${item.image}" alt="${item.name}" class="card-image">
             <span class="item-status ${statusInfo.class}">${statusInfo.text}</span>
             <div class="card-content">
                 <h3>${item.name}</h3>
                 <p><strong>Category:</strong> ${item.category}</p>
-                <p>${item.description}</p>
-                ${isAvailable ? 
-                    `<button class="contact-btn" onclick="alert('To claim this item, please contact the donor at: ${item.contact}')">I Want This</button>` 
-                    : `<button class="contact-btn" disabled>View Details</button>`
-                }
+                <p>${item.description.substring(0, 50)}...</p>
+                <button class="contact-btn" style="pointer-events: none;">View Details</button>
             </div>
         </div>
     `;
 }
 
 /**
- * Renders all items to the page.
- * @param {Array} items 
+ * Opens the modal and injects the selected item's detailed information.
+ */
+function showModal(itemId) {
+    const item = donationItems.find(i => i.id === itemId);
+    if (!item) return;
+
+    const statusInfo = getStatusInfo(item.status);
+    
+    // Construct the detailed HTML content for the modal
+    modalDetailsContent.innerHTML = `
+        <h2>${item.name}</h2>
+        <img src="${item.image}" alt="${item.name}" />
+        <p class="item-status ${statusInfo.class}" style="position: static; display: inline-block;">${statusInfo.text}</p>
+        
+        <h3>Full Description:</h3>
+        <p>${item.description}</p>
+        
+        <h3>Category:</h3>
+        <p>${item.category}</p>
+        
+        <div class="modal-contact-info">
+            <h4>Contact Donor:</h4>
+            ${item.status === 'available' ? 
+                `<p>Please use this info to coordinate pickup:</p>
+                 <p><strong>${item.contact}</strong></p>
+                 <small>Note: Site owner is not responsible for the handover.</small>` 
+                : `<p>This item is currently **${statusInfo.text.toUpperCase()}**.</p>`
+            }
+        </div>
+    `;
+
+    itemModal.style.display = "block";
+}
+
+/**
+ * Closes the modal.
+ */
+function closeModal() {
+    itemModal.style.display = "none";
+}
+
+/**
+ * Renders all items to the page and attaches event listeners.
  */
 function renderItems(items) {
-    itemListContainer.innerHTML = ''; // Clear existing content
+    itemListContainer.innerHTML = '';
     if (items.length === 0) {
         itemListContainer.innerHTML = '<p>Currently, there are no items available for donation.</p>';
         return;
@@ -97,15 +125,23 @@ function renderItems(items) {
     items.forEach(item => {
         itemListContainer.innerHTML += createItemCard(item);
     });
+
+    // Attach click listener to each card for modal opening
+    document.querySelectorAll('.donation-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const itemId = parseInt(e.currentTarget.dataset.id);
+            showModal(itemId);
+        });
+    });
 }
 
-// Renders the initial item list and sets up filter functionality
+// --- Initialization and Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
     renderItems(donationItems);
     
+    // 1. Filter button logic
     document.querySelectorAll('.filter-btn').forEach(button => {
         button.addEventListener('click', (e) => {
-            // Update active state
             document.querySelector('.filter-btn.active').classList.remove('active');
             e.target.classList.add('active');
 
@@ -118,5 +154,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderItems(filteredItems);
             }
         });
+    });
+
+    // 2. Modal Close Listeners
+    closeModalBtn.addEventListener('click', closeModal);
+
+    // Close the modal if the user clicks anywhere outside of the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target === itemModal) {
+            closeModal();
+        }
+    });
+
+    // Close the modal when the ESC key is pressed
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && itemModal.style.display === 'block') {
+            closeModal();
+        }
     });
 });
