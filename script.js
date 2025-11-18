@@ -173,3 +173,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+// --- (放在 script.js 的最下方，DOMContentLoaded 區塊內) ---
+
+    // 3. Form Submission Success Check (處理表單提交後的成功提示)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('submission') === 'success') {
+        // 彈出一個提示框 (Alert box) 告知使用者提交成功
+        alert("Thank you! Your donation item has been submitted successfully. We will review it soon!");
+        
+        // 清除 URL 中的參數，保持網址列乾淨
+        history.replaceState(null, '', window.location.pathname);
+    }
+}); // 這是 DOMContentLoaded 的結尾
