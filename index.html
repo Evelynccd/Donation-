@@ -1,12 +1,76 @@
-<form action="YOUR_FORMSPREE_ENDPOINT" method="POST">
-    <label for="item_name">Item Name:</label>
-    <input type="text" id="item_name" name="Item Name" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧸 Morandi Gentle Donation Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
 
-    <label for="description">Description:</label>
-    <textarea id="description" name="Detailed Description" required></textarea>
+    <header>
+        <div class="container">
+            <h1>Morandi Gentle Exchange ✨</h1>
+            <p>A space for sharing items with warmth and soft colors.</p>
+        </div>
+    </header>
 
-    <label for="contact">Contact Info (Email/Line ID):</label>
-    <input type="text" id="contact" name="Contact Information" required>
+    <main class="container">
 
-    <button type="submit">Submit Donation</button>
-</form>
+        <section class="filter-section">
+            <button class="filter-btn active">All Items</button>
+            <button class="filter-btn">Books</button>
+            <button class="filter-btn">Appliances</button>
+            <button class="filter-btn">Apparel</button>
+        </section>
+
+        <section id="item-list" class="item-grid">
+            </section>
+
+        <hr>
+
+        <section class="donation-form-section">
+            <h2>📦 Donate an Item</h2>
+            <form action="<YOUR_FORMSPREE_ENDPOINT>" method="POST" class="donation-form">
+                
+                <div class="form-group">
+                    <label for="item_name">Item Name *</label>
+                    <input type="text" id="item_name" name="Item Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Item Category *</label>
+                    <select id="category" name="Category" required>
+                        <option value="">Select a Category</option>
+                        <option value="Books">Books</option>
+                        <option value="Appliances">Appliances</option>
+                        <option value="Apparel">Apparel</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Detailed Description and Condition *</label>
+                    <textarea id="description" name="Detailed Description" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact">Your Contact Info (Email/Line ID) *</label>
+                    <input type="text" id="contact" name="Contact Information" required>
+                    <small>This information will only be used for handover coordination and will not be publicly displayed.</small>
+                </div>
+                
+                <button type="submit">Submit Donation Information</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2025 Morandi Gentle Exchange | Information Sharing Platform</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
