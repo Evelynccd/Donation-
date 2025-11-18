@@ -27,7 +27,7 @@ const donationItems = [
         contact: "WeChat ID: MikeJones88",
         image: "https://via.placeholder.com/600x300/D9CFCF/4A4A4A?text=Blender+Image"
     }
-    // Add more items here...
+    // 您可以在此處加入更多商品。記得手動調整 status: "available" 或 "reserved"
 ];
 
 const itemListContainer = document.getElementById('item-list');
@@ -72,6 +72,7 @@ function createItemCard(item) {
 
 /**
  * Opens the modal and injects the selected item's detailed information.
+ * 這是點擊卡片後，會彈出的視窗
  */
 function showModal(itemId) {
     const item = donationItems.find(i => i.id === itemId);
@@ -102,7 +103,7 @@ function showModal(itemId) {
         </div>
     `;
 
-    itemModal.style.display = "block";
+    itemModal.style.display = "block"; // 顯示模態視窗
 }
 
 /**
@@ -130,23 +131,26 @@ function renderItems(items) {
     document.querySelectorAll('.donation-card').forEach(card => {
         card.addEventListener('click', (e) => {
             const itemId = parseInt(e.currentTarget.dataset.id);
-            showModal(itemId);
+            showModal(itemId); // <--- 點擊卡片，會執行 showModal 函數
         });
     });
 }
 
 // --- Initialization and Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
+    // 初始載入所有商品
     renderItems(donationItems);
     
-    // 1. Filter button logic
+    // 1. Filter button logic (篩選按鈕功能)
     document.querySelectorAll('.filter-btn').forEach(button => {
         button.addEventListener('click', (e) => {
+            // 切換按鈕的 active 狀態
             document.querySelector('.filter-btn.active').classList.remove('active');
             e.target.classList.add('active');
 
             const filterCategory = e.target.textContent;
             
+            // 根據篩選條件重新渲染商品列表
             if (filterCategory === 'All Items') {
                 renderItems(donationItems);
             } else {
@@ -156,32 +160,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 2. Modal Close Listeners
-    closeModalBtn.addEventListener('click', closeModal);
+    // 2. Modal Close Listeners (模態視窗關閉功能)
+    closeModalBtn.addEventListener('click', closeModal); // 點擊 X 關閉
 
-    // Close the modal if the user clicks anywhere outside of the modal content
+    // 點擊視窗外圍關閉
     window.addEventListener('click', (event) => {
         if (event.target === itemModal) {
             closeModal();
         }
     });
 
-    // Close the modal when the ESC key is pressed
+    // 按下 ESC 鍵關閉
     window.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && itemModal.style.display === 'block') {
             closeModal();
         }
     });
-});
-// --- (放在 script.js 的最下方，DOMContentLoaded 區塊內) ---
-
-    // 3. Form Submission Success Check (處理表單提交後的成功提示)
+    
+    // 3. Form Submission Success Check (表單成功提交後的提示)
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('submission') === 'success') {
-        // 彈出一個提示框 (Alert box) 告知使用者提交成功
+        // 彈出成功提示框
         alert("Thank you! Your donation item has been submitted successfully. We will review it soon!");
         
-        // 清除 URL 中的參數，保持網址列乾淨
+        // 清理 URL 參數
         history.replaceState(null, '', window.location.pathname);
     }
-}); // 這是 DOMContentLoaded 的結尾
+});
